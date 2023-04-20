@@ -1,595 +1,616 @@
 {
- "openapi": "3.0.0",
- "info": {
-   "version": "1.0.0",
-   "title": "Mi API",
-   "description": "Descripción de mi API"
- },
- "servers": [
-   {
-     "url": "http://localhost:3001"
-   }
- ],
- "paths": {
-   "/personas": {
-        "get": {
-       "summary": "Obtener una lista de personas",
-       "description": "Obtiene una lista de personas con sus respectivos datos",
-       "responses": {
-        "200": {
-           "description": "Operación exitosa",
-           "content": {
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Mi API",
+    "description": "Descripción de mi API"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001"
+    }
+  ],
+  "paths": {
+    "/personas": {
+      "get": {
+        "summary": "Obtener una lista de personas",
+        "description": "Obtiene una lista de personas con sus respectivos datos",
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "añade una persona con sus respectivos datos",
+        "description": "añade una persona a la lista de personas",
+        "requestBody": {
+          "required": "true",
+          "content": {
             "application/json": {
-               "schema": {
-                 "type": "array",
-                 "items": {
-                   "type": "object",
-                   "properties": {
-                     "id": {
-                       "type": "integer"
-                    },
-                     "name": {
-                       "type": "string"
-                     }
-                   }
-                 }
-               }
-             }
-           }    
-         }
+              "schema": {
+                "$ref": "#/components/schemas/persona"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "nombre": {
+                        "type": "string"
+                      },
+                      "altura": {
+                        "type": "integer"
+                      },
+                      "peso": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
-      
     },
-    "/personas/{id}/{name}/{altura}/{peso}":{
-        "post": {
-            "summary": "añade una persona con sus respectios datos",
-            "description": "añade una persona a la lista de personas",
-            "parameters":[{
-                "in": "path",
-                "name": "id",
-                "type": "integer",
-                "required": "true"
-
-            },{
-                "in": "path",
-                "name": "name",
-                "type": "string",
-                "required": "true"
-
-            },
-            {
-                "in": "path",
-                "name": "altura",
-                "type": "integer",
-                "required": "true"
-
-            },
-            {
-                "in": "path",
-                "name": "peso",
-                "type": "integer",
-                "required": "true"
-
-            }
-        ],       
-            "responses": {
-             "200": {
-                "description": "Operación exitosa",
-                "content": {
-                 "application/json": {
-                    "schema": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "integer"
-                         },
-                          "name": {
-                            "type": "string"
-                          },
-                          "altura":{
-                            "type": "integer"
-                          },
-                          "peso":{
-                            "type": "integer"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }    
-              }
-             }
-           }
-    },
-    "/personas/{id}" :{
-      "delete": {
-          "summary": "borra una persona",
-          "description": "borra una persona a la lista de personas",
-          "parameters":[{
-              "in": "path",
-              "name": "id",
-              "type": "integer",
-              "required": "true"
-          }
-      ],
-          "responses": {
-           "200": {
-              "description": "Operación exitosa",
-              "content": {
-               "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer"
-                       },
-                        "name": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }    
-            }
-           }
-         }
-    },
-    "personas/{name}/{id}" :{
+    "/persona/{id}": {
       "put": {
-          "summary": "modifica el id y el nombre de una persona",
-          "description": "modifica el id y el nombre en la lista de personas",
-          "parameters":[{
-              "in": "path",
-              "name": "id",
-              "type": "integer",
-              "required": "true"
-          },{
-            
-              "in": "path",
-              "name": "name",
-              "type": "string",
-              "required": "true"
-          
-          }
-      ],
-          "responses": {
-           "200": {
-              "description": "Operación exitosa",
-              "content": {
-               "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer"
-                       },
-                        "name": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }    
-            }
-           }
-         }
-    },    "personas/{id}/{peso}" :{
-      "patch": {
-          "summary": "modifica el id y el peso de una persona",
-          "description": "modifica el id y el peso en la lista de personas",
-          "parameters":[{
-              "in": "path",
-              "name": "id",
-              "type": "integer",
-              "required": "true"
-          },{
-            
-              "in": "path",
-              "name": "peso",
-              "type": "integer",
-              "required": "true"
-          
-          }
-      ],
-          "responses": {
-           "200": {
-              "description": "Operación exitosa",
-              "content": {
-               "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer"
-                       },
-                        "peso": {
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  }
-                }
-              }    
-            }
-           }
-         }
-    },
-      "/alimentos": {
-           "get": {
-          "summary": "Obtener una lista de alimentos",
-          "description": "Obtiene una lista de alimentos con sus respectivos datos",
-          "responses": {
-           "200": {
-              "description": "Operación exitosa",
-              "content": {
-               "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "calorias": {
-                          "type": "integer"
-                       },
-                        "name": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }    
-            }
-           }
-         }
-         
-       },
-       "/alimentos/{name}/{calorias}":{
-        "post": {
-            "summary": "añade un alimento con sus respectivas calorias",
-            "description": "añadir un alimento a la lista de alimentos",
-            "parameters":[{
-                "in": "path",
-                "name": "calorias",
-                "type": "integer",
-                "required": "true"
-
-            },{
-                "in": "path",
-                "name": "name",
-                "type": "string",
-                "required": "true"
-
-            }
-        ],       
-            "responses": {
-             "200": {
-                "description": "Operación exitosa",
-                "content": {
-                 "application/json": {
-                    "schema": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "integer"
-                         },
-                          "name": {
-                            "type": "string"
-                          }
-                          
-                        }
-                      }
-                    }
-                  }
-                }    
+        "summary": "modifica una persona con sus respectivos datos",
+        "description": "modifica una persona a la lista de personas",
+        "requestBody": {
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/persona"
               }
-             }
-           }
-    },
-    "/alimentos/{name}" :{
-      "delete": {
-          "summary": "borra un alimento",
-          "description": "borra un alimento a la lista de alimentos",
-          "parameters":[{
-              "in": "path",
-              "name": "name",
-              "type": "string",
-              "required": "true"
-          },{
-              "in": "path",
-              "name": "calorias",
-              "type": "integer",
-              "required": "true"
-      }],
-          "responses": {
-           "200": {
-              "description": "Operación exitosa",
-              "content": {
-               "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "calorias": {
-                          "type": "integer"
-                       },
-                        "name": {
-                          "type": "string"
-                        }
+            }
+          }
+        },
+        "parameters": {
+          "name": "id",
+          "schema": {
+            "type": "integer"
+          },
+          "in": "path"
+        },
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "altura": {
+                        "type": "integer"
+                      },
+                      "peso": {
+                        "type": "integer"
                       }
                     }
                   }
                 }
-              }    
+              }
             }
-           }
-         }
-    },
-    "/alimentos/{calorias}" :{
-      "put": {
-          "summary": "modifica las calorias de un alimento",
-          "description": "modifica calorias en la lista de alimentos",
-          "parameters":[{
-              "in": "path",
-              "name": "id",
-              "type": "integer",
-              "required": "true"
-          },{
-            "in": "path",
-            "name": "name",
-            "type": "string",
-            "required": "true"
+          }
         }
-      ],
-          "responses": {
-           "200": {
-              "description": "Operación exitosa",
-              "content": {
-               "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer"
-                       },
-                        "name": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }    
-            }
-           }
-         }
-    },"/alimentos/{calorias}/{name}" :{
+      },
       "patch": {
-          "summary": "modifica las calorias y el nombre de un alimento",
-          "description": "modifica calorias en la lista de alimentos",
-          "parameters":[{
-              "in": "path",
-              "name": "id",
-              "type": "integer",
-              "required": "true"
-          },{
-            "in": "path",
-            "name": "name",
-            "type": "string",
-            "required": "true"
-        }
-      ],
-          "responses": {
-           "200": {
-              "description": "Operación exitosa",
-              "content": {
-               "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer"
-                       },
-                        "name": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }    
-            }
-           }
-         }
-    },
-          "/consumosXFecha": {
-           "get": {
-          "summary": "Obtener una lista del consumo X fecha",
-          "description": "Obtiene una lista del consumo X fecha con sus respectivos datos",
-          "responses": {
-           "200": {
-              "description": "Operación exitosa",
-              "content": {
-               "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "calorias": {
-                          "type": "integer"
-                       },
-                        "dia": {
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  }
-                }
-              }    
-            }
-           }
-         }
-         
-       },
-       "/consumosXFecha/{dia}/{calorias}":{
-        "post": {
-            "summary": "añade una fecha con sus respectivas calorias",
-            "description": "añadir una fecha con calorias a la lista",
-            "parameters":[{
-                "in": "path",
-                "name": "calorias",
-                "type": "integer",
-                "required": "true"
-
-            },{
-                "in": "path",
-                "name": "dia",
-                "type": "integer",
-                "required": "true"
-
-            }
-        ],       
-            "responses": {
-             "200": {
-                "description": "Operación exitosa",
-                "content": {
-                 "application/json": {
-                    "schema": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "calorias": {
-                            "type": "integer"
-                         },
-                          "dia": {
-                            "type": "integer"
-                          }
-                          
-                        }
-                      }
-                    }
-                  }
-                }    
+        "summary": "modifica un dato de una persona",
+        "description": "modifica un dato de una persona de la lista de personas",
+        "requestBody": {
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "integer"
               }
-             }
-           }
-    },
-    "/consumosXFecha/{dia}" :{
+            }
+          }
+        },
+        "response": {
+          "200": {
+            "description": "Operación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
-          "summary": "borra una fecha",
-          "description": "borra un dia a la lista de fechas",
-          "parameters":[{
-              "in": "path",
-              "name": "dia",
-              "type": "integer",
-              "required": "true"
-          }],
-          "responses": {
-           "200": {
-              "description": "Operación exitosa",
-              "content": {
-               "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "dia": {
-                          "type": "integer"
-                        }
+        "summary": "borra una persona",
+        "description": "borra una persona de la lista de personas",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "llave de una persona",
+            "type": "integer"
+          }
+        ],
+        "requestBody": {
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "schema": {
+                  "$ref": "#/components/schemas/persona"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "nombre": {
+                        "type": "string"
+                      },
+                      "altura": {
+                        "type": "integer"
+                      },
+                      "peso": {
+                        "type": "integer"
                       }
                     }
                   }
                 }
-              }    
+              }
             }
-           }
-         }
+          }
+        }
+      }
     },
-    "/consumosXFecha/{calorias}" :{
+    "/alimentos": {
+      "get": {
+        "summary": "Obtener una lista de alimentos",
+        "description": "Obtiene una lista de alimentos con sus respectivos datos",
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "post": {
+      "summary": "añade un alimento con sus respectivos datos",
+      "description": "añade una alimento a la lista de personas",
+      "requestBody": {
+        "required": "true",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/alimento"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Operación exitosa",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "put": {
+      "summary": "modifica un alimento con sus respectivos datos",
+      "description": "modifica un alimento de la lista de alimentos",
+      "requestBody": {
+        "required": "true",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/alimento"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Operación exitosa",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "calorias": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "patch": {
+      "summary": "modifica un dato de un alimento",
+      "description": "modifica un dato de un alimento de la lista de alimentos",
+      "requestBody": {
+        "required": "true",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Operación exitosa",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "calorias": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "summary": "borra un alimento",
+      "description": "borra un alimento de la lista de alimentos",
+      "responses": {
+        "200": {
+          "description": "Operación exitosa",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "calorias": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/consumoXFecha": {
+      "get": {
+        "summary": "Obtener la lista de consumoXfecha",
+        "description": "Obtiene una lista de fechas respectivos datos",
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "calorias": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "añade un alimento con sus respectivos datos",
+        "description": "añade una alimento a la lista de personas",
+        "requestBody": {
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/consumoXFecha"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "consumo": {
+                        "type": "integer"
+                      },
+                      "fecha": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "put": {
-          "summary": "modifica calorias",
-          "description": "modifica las calorias en la lista de fechas",
-          "parameters":[{
-              "in": "path",
-              "name": "calorias",
-              "type": "integer",
-              "required": "true"
-          }],
-          "responses": {
-           "200": {
-              "description": "Operación exitosa",
-              "content": {
-               "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "calorias": {
-                          "type": "integer"
-                       }
+        "summary": "modifica una fecha con sus respectivos datos",
+        "description": "modifica una fecha de la lista de consumoXFecha",
+        "requestBody": {
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/consumoXFecha"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "calorias": {
+                        "type": "integer"
+                      },
+                      "dia": {
+                        "type": "integer"
                       }
                     }
                   }
                 }
-              }    
+              }
             }
-           }
-         }
-    },
-    "/consumosXFecha/{calorias}/{name}" :{
+          }
+        }
+      },
       "patch": {
-          "summary": "modifica calorias y el nombre",
-          "description": "modifica las calorias en la lista de fechas",
-          "parameters":[{
-              "in": "path",
-              "name": "calorias",
-              "type": "integer",
-              "required": "true"
-          }],
-          "responses": {
-           "200": {
-              "description": "Operación exitosa",
-              "content": {
-               "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "calorias": {
-                          "type": "integer"
-                       }
+        "summary": "modifica las calorias de una fecha",
+        "description": "modifica calorias de una fecha de la lista de consumoXFecha",
+        "requestBody": {
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "calorias": {
+                        "type": "integer"
                       }
                     }
                   }
                 }
-              }    
+              }
             }
-           }
-         }
+          }
+        }
+      },
+      "delete": {
+        "summary": "borra una fecha",
+        "description": "borra una fecha de la lista de consumoXFecha",
+        "requestBody": {
+          "required": "true",
+          "content": {
+            "application/json": {
+              "schema": {
+                "schema": {
+                  "$ref": "#/components/schemas/consumoXFecha"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "calorias": {
+                        "type": "integer"
+                      },
+                      "dia": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
-
+  },
+  "components": {
+    "schemas": {
+      "persona": {
+        "type": "object",
+        "required": [
+          "calorias",
+          "name",
+          "altura",
+          "peso"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "altura": {
+            "type": "integer"
+          },
+          "peso": {
+            "type": "integer"
+          }
+        }
+      },
+      "alimento": {
+        "type": "object",
+        "required": [
+          "calorias",
+          "name"
+        ],
+        "properties": {
+          "calorias": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "consumoXFecha": {
+        "type": "object",
+        "required": [
+          "calorias",
+          "dia"
+        ],
+        "properties": {
+          "calorias": {
+            "type": "integer"
+          },
+          "dia": {
+            "type": "integer"
+          }
+        }
+      }
+    }
   }
 }
