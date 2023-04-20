@@ -2,13 +2,10 @@ import { prop, getModelForClass, modelOptions } from '@typegoose/typegoose'
 
 @modelOptions({
     "schemaOptions": {
-        "collection": "personas"
+        "collection": "persona"
     }
 })
 class Persona {
-    @prop()
-    id!: number
-
     @prop()
     name!: string
 
