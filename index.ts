@@ -6,6 +6,8 @@ import mongoose from 'mongoose'
 import { modeloPersona } from './modelos/modeloPersona';
 import bodyParser from 'body-parser';
 import { MPersonas } from './metodosPersonas';
+import { MAlimentos } from './metodosAlimentos';
+import { modeloAlimento } from './modelos/modeloAlimento';
 
 
 
@@ -33,15 +35,19 @@ app.delete('/personas', MPersonas)
 app.put('/personas', MPersonas)
 
 
-app.put('/Persona', async (req, res) => {
-  const data = await modeloPersona.findOneAndReplace({"nombre": req.body.nombre}, {"nombre": req.body.nuevo_nombre})
-  res.status(200).send(data)  
-})
 
-app.delete('/', async (req, res) => {
-  const data = await modeloPersona.findOneAndDelete({"nombre": "leto"})
-  res.status(200).send(data)
-})
+
+app.get('/alimentos', MAlimentos)
+
+app.post('/alimentos', MAlimentos)
+
+app.patch('/alimentos', MAlimentos)
+
+app.put('/alimentos', MAlimentos)
+
+app.delete('/alimentos', MAlimentos)
+
+
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

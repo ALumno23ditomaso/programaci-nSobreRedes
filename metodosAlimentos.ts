@@ -1,80 +1,33 @@
 import express, { Router } from 'express'; 
 const app: express.Application = express();
 import { alimento } from './alimento';
-export const MAalimentos = Router()
-
-let alimentos:Array<alimento> = new Array<alimento>
-let pizza : alimento = new alimento ("pizza", 2500)
-let turron : alimento = new alimento ("turron", 1500)
-let hamburguesa : alimento = new alimento ("hamburguesa", 2800)
-alimentos.push(pizza)
-alimentos.push(turron)
-alimentos.push(hamburguesa)
-
-app.get("/alimentos", (_req,_res) => {
-    _res.json(alimentos);
-  })
-
-  app.get("/alimentos/:name", (_req,_res) => {
-    _res.json(alimentos.find(item => {
-                  return item.name == String(_req.params.name)
-              }));
-  
-  })
-
-  
-  app.post("/alimentos/", (_req,_res) => {
-    const p = new alimento(_req.body.name, Number(_req.body.calorias));
-    alimentos.push(p);
-    _res.json(p);   
-  })
-  
-
-app.delete("/alimentos/:name", (_req,_res) => {
-    const p = alimentos.find(item => {
-        return item.name == String(_req.params.name)
-    })
-    if (p){
-      delete alimentos[alimentos.indexOf(p)]
-    }
-    _res.status(204).send()
-  })
+import { modeloAlimento } from './modelos/modeloAlimento';
+export const MAlimentos = Router()
 
 
+MAlimentos.get('/alimentos', async (req, res) => {
+  const data = await modeloAlimento.find()  
+  res.status(200).send(data)
+})
 
-  app.put("/alimentos/:name", (_req,_res) => {
-    const p = alimentos.find(item => {
-                  return item.name == String(_req.params.name)
-              })
-    if (p){
-      p.name = _req.body.name
-    }
-    _res.json(p);   
-  
-  
-  })
-  app.patch('/alimentos/:name', (_req, _res) => {
-    const alimento = alimentos.find(p => p.name == String(_req.params.name));
-  
-    if (alimento) {
-     
-      if (_req.body.calorias) {
-        alimento.calorias=_req.body.calorias;
-      }
-      if (_req.body.name) {
-        alimento.name=_req.body.name;
-      }
-    }
-    return _res.status(204).send();
-  });
+MAlimentos.post('/alimentos', async (req, res) => {
+  console.log(req.body)
+  const data = await modeloAlimento.create(req.body)
+  res.status(200).send(data)  
+})
 
-  //muestra los alimentos con determinadas calorias
-  app.get("/alimentos/calorias/:calorias", (_req,_res) => {
-    let aux:Array<alimento> = new Array<alimento>
-    alimentos.forEach(alimento => {
-    if(alimento.calorias == Number(_req.params.calorias)){
-      aux.push(alimento);
-      }
-    });
-    _res.json(aux);
-  })
+MAlimentos.patch('/alimentos', async (req, res) => {
+  const data = await modeloAlimento.findOneAndUpdate({"name": req.body.name}, {"name": req.body.nuevo_name})
+  res.status(200).send(data)  
+})
+
+MAlimentos.put('/alimentos', async (req, res) => {
+  const data = await modeloAlimento.findOneAndReplace(
+      {"name": req.body.name}, {"name": req.body.nuevo_name, "calorias": req.body.nuevo_calorias})
+  res.status(200).send(data)  
+})
+
+MAlimentos.delete('/alimentos', async (req, res) => {
+  const data = await modeloAlimento.findOneAndDelete({"name": req.body.name})
+  res.status(200).send(data)
+})
