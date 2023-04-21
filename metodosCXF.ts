@@ -1,81 +1,45 @@
 import express, { Router } from 'express'; 
-const app: express.Application = express();
 export const MConsumoXFecha = Router()
-
 import { consumoXFecha } from './consumoXFecha';
+import { modeloConsumoXFecha } from './modelos/modeloConsumoXFecha';
 
-let listaconsumosXFecha:Array<consumoXFecha> = new Array<consumoXFecha>
-let martes : consumoXFecha = new consumoXFecha (5, 8000)
-let miercoles : consumoXFecha = new consumoXFecha (6, 3000)
-let jueves : consumoXFecha = new consumoXFecha (7, 6000)
-listaconsumosXFecha.push(martes)
-listaconsumosXFecha.push(miercoles)
-listaconsumosXFecha.push(jueves)
+MConsumoXFecha.get('/', async (req, res) => {
+  const data = await modeloConsumoXFecha.find()  
+  res.status(200).send(data)
+})
 
-app.get("/consumoXFecha", (_req,_res) => {
-    _res.json(listaconsumosXFecha);
-  })
+MConsumoXFecha.post('/', async (req, res) => {
+  console.log(req.body)
+  const data = await modeloConsumoXFecha.create(req.body)
+  res.status(200).send(data)  
+})
 
+MConsumoXFecha.patch('/', async (req, res) => {
+  const data = await modeloConsumoXFecha.findOneAndUpdate({"dia": req.body.name}, {"calorias": req.body.nuevo_calorias})
+  res.status(200).send(data)  
+})
 
-  app.get("/consumoXFecha/:dia", (_req,_res) => {
-    _res.json(listaconsumosXFecha.find(item => {
-                  return item.dia == Number(_req.params.dia)
-              }));
-  
-  })
+MConsumoXFecha.put('/', async (req, res) => {
+  const data = await modeloConsumoXFecha.findOneAndReplace(
+      {"dia": req.body.dia}, {"dia": req.body.nuevo_dia, "calorias": req.body.nuevo_altura})
+  res.status(200).send(data)  
+})
 
+MConsumoXFecha.delete('/', async (req, res) => {
+  const data = await modeloConsumoXFecha.findOneAndDelete({"dia": req.body.dia})
+  res.status(200).send(data)
+})
 
-  app.post("/consumoXFecha/", (_req,_res) => {
-    const p = new consumoXFecha(Number(_req.body.dia), _req.body.calorias);
-    listaconsumosXFecha.push(p);
-    _res.json(p);   
-  })
-  
-
-app.delete("/consumoXFecha/:dia", (_req,_res) => {
-    const p = listaconsumosXFecha.find(item => {
-        return item.dia == Number(_req.params.dia)
-    })
-    if (p){
-      delete listaconsumosXFecha[listaconsumosXFecha.indexOf(p)]
-    }
-    _res.status(204).send()
-  })
-
-
-  app.put("/consumoXFecha/:dia", (_req,_res) => {
-    const p = listaconsumosXFecha.find(item => {
-                  return item.dia == Number(_req.params.dia)
-              })
-    if (p){
-      p.dia = _req.body.dia
-    }
-    _res.json(p);   
-  })
-
-  app.patch('/consumoXFecha/:dia', (_req, _res) => {
-    const consumoXFecha = listaconsumosXFecha.find(p => p.dia == Number(_req.params.dia));
-  
-    if (consumoXFecha) {
-     
-      if (_req.body.dia) {
-        consumoXFecha.dia=_req.body.calorias;
-      }
-      if (_req.body.calorias) {
-        consumoXFecha.calorias=_req.body.name;
-      }
-    }
-    return _res.status(204).send();
-  });
 
     //muestra los dias con determinadas calorias
-    app.get("/consumoXFecha/calorias/:calorias", (_req,_res) => {
-      let aux:Array<consumoXFecha> = new Array<consumoXFecha>
-      listaconsumosXFecha.forEach(consumoXFecha => {
+    MConsumoXFecha.get("/consumoXFecha/calorias/:calorias", async (_req,_res) => {
+      let aux = await modeloConsumoXFecha.find()
+      let aux2:Array<consumoXFecha> = new Array<consumoXFecha>
+      aux.forEach(consumoXFecha => {
       if(consumoXFecha.calorias == Number(_req.params.calorias)){
         aux.push(consumoXFecha);
         }
       });
-      _res.json(aux);
+      _res.json(aux2);
     })
   
