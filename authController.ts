@@ -1,6 +1,7 @@
-import  { Request, Response } from 'express'; 
+import  { Request, Response, json } from 'express'; 
 import User, { IUser } from '../modelos/modeloUser';
 import jwt  from 'jsonwebtoken';
+
 
 export const signup = async (req: Request, res: Response) => {
     res.send("signup");
@@ -18,8 +19,18 @@ export const signup = async (req: Request, res: Response) => {
 export const signin = async (req: Request, res: Response) => {
     const user = await User.findOne({username: req.body.username})
     if(!user) return res.status(400).json("Username or password is wrong")
-    res.send("login")
+    const correctedPassword: Boolean = await user.validatedPassword(req.body.password);
+    if(!correctedPassword) return res.status(400).json("Invalid Password")
+    
+    const token = jwt.sign({_id: user.id}, process.env.TOKEN_SECRET || "tokentest",{
+        expiresIn: 60 * 60 * 24
+    })
+
+    res.header("auth-token", token).json(user);
 }
 export const profile = (req: Request, res: Response) => {
+    if(req.header("auth-token")){
+        console.log("Data")
+    }
     res.send("profile");
 }
