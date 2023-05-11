@@ -9,8 +9,10 @@ import { MPersonas } from './metodosPersonas';
 import { MAlimentos } from './metodosAlimentos';
 import { modeloAlimento } from './modelos/modeloAlimento';
 import { MConsumoXFecha } from './metodosCXF';
-
-
+import authRoutes from './routes/auth';
+import morgan from 'morgan';
+import dotenv from "dotenv"
+dotenv.config();
 
 const port = 6553;
 
@@ -18,7 +20,8 @@ mongoose.set('strictQuery', false)
 mongoose.connect('mongodb://localhost:27017/tp_pruscino')
 
 app.use(express.json());
-
+app.use(authRoutes);
+app.use(morgan("dev"))
 app.listen(port,() => {
   console.log(`http://localhost:${port}/`)
 })
@@ -31,7 +34,7 @@ app.use('/alimentos', MAlimentos)
 
 app.use('/consumoXFecha', MConsumoXFecha)
 
+app.use('/auth', authRoutes);
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-
 
